@@ -1,0 +1,11 @@
+server:
+  port: 8080
+
+wechat:
+  server: https://api.weixin.qq.com
+  appid: wxfcb47ae4ad192245
+  secret: 4a8e527806dad877f102428825049bdb
+
+logging:
+  level:
+    com.zcy.cn.feign.wechat.server.Auth: debug

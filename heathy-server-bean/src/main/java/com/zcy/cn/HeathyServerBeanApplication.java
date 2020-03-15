@@ -1,13 +1,8 @@
 package com.zcy.cn;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Configuration;
 
-@SpringBootApplication
+@Configuration
 public class HeathyServerBeanApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(HeathyServerBeanApplication.class, args);
-    }
 
 }

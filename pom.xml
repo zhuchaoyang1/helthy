@@ -7,6 +7,18 @@
     <groupId>com.zcy.cn</groupId>
     <artifactId>heathy-server</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>heathy-server-api</module>
+        <module>heathy-server-redis</module>
+        <module>heathy-server-bean</module>
+        <module>heathy-server-config-github</module>
+        <module>heathy-server-dashboard</module>
+        <module>heathy-server-eureka</module>
+        <module>heathy-server-kafka-websocket</module>
+        <module>heathy-server-zuul</module>
+    </modules>
 
 
 </project>
