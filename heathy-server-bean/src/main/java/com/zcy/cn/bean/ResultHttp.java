@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ResultHttp {
 
-    private Integer code;   // -1 业务失败   0 业务成功
+    private Integer code;   // 0 业务失败   1 业务成功
 
     private Object result;  // 业务返回的数据
 

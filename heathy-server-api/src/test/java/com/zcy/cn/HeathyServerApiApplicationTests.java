@@ -1,13 +1,18 @@
 package com.zcy.cn;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class HeathyServerApiApplicationTests {
+public class HeathyServerApiApplicationTests {
+
+    @Value("${ss:sss}")
+    private String ss;
 
     @Test
-    void contextLoads() {
+    public void contextLoads() {
+        System.out.println(ss);
     }
 
 }

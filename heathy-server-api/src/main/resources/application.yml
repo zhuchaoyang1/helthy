@@ -1,3 +1,23 @@
 spring:
   profiles:
-    active: online,redis
+    active: online,redis,dao
+
+# 加密
+jwt:
+  secret: geiwodiangasfdjsikolkjikolkijswe
+
+myeureka:
+  server:
+    localhost
+  port:
+    8761
+
+eureka:
+  instance:
+    preferIpAddress: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    serviceUrl:
+      defaultZone: http://${myeureka.server}:${myeureka.port}/eureka/
+    register-with-eureka: true
+    fetch-registry: true

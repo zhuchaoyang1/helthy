@@ -1,6 +1,10 @@
 server:
   port: 8080
 
+spring:
+  application:
+    name: api
+
 wechat:
   server: https://api.weixin.qq.com
   appid: wxfcb47ae4ad192245
@@ -9,3 +13,7 @@ wechat:
 logging:
   level:
     com.zcy.cn.feign.wechat.server.Auth: debug
+
+info:
+  app.name: heathy-server-api
+  description: Providing services to wechat

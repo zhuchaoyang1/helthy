@@ -1,0 +1,67 @@
+server:
+  port: 1031
+
+#spring:
+#  application:
+#    name: service-zuul
+#  security:
+#    user:
+#      name: admin
+#      password: admin
+#      roles: ACTUATOR_ADMIN
+
+myeureka:
+  server:
+    localhost
+  port:
+    8761
+
+eureka:
+  instance:
+    preferIpAddress: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    serviceUrl:
+      defaultZone: http://${myeureka.server}:${myeureka.port}/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
+zuul:
+  routes:
+    # 任意起名  保证多个规则不冲突
+    cunsumer:
+      serviceId: api
+      path: /v1/api/**
+  ignored-services: "*"
+
+  ratelimit:
+    enabled: true
+    repository: IN_MEMORY
+    policies:
+      cunsumer:
+        limit: 100
+        quota: 1000           # 当前单位为秒
+        refresh-interval: 60  # 当前单位为秒
+        type:
+        - ORIGIN
+    retryable: true
+
+ribbon:
+  MaxAutoRetries: 2
+  MaxAutoRetriesNextServer: 0
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+
+info:
+  app.name: heathy-server-zuul
+  description: zuul-router
+
+white:
+  list: /user/login,/user/reg
