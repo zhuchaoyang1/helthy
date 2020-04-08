@@ -3,11 +3,13 @@ package com.zcy.cn.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.JOSEException;
+import com.zcy.cn.annotation.TokenModel;
 import com.zcy.cn.bean.Users;
 import com.zcy.cn.dao.UserDao;
 import com.zcy.cn.feign.wechat.server.Auth;
 import com.zcy.cn.service.UserService;
 import com.zcy.cn.util.RedisUtils;
+import com.zcy.cn.vo.AnnotationUser;
 import com.zcy.cn.vo.UsersVO;
 import jwt.GenJWTUTil;
 import org.springframework.beans.BeanUtils;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,6 +82,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @TokenModel
     public UsersVO reg(Users users) {
         return userDao.save(users).createUserVO();
     }

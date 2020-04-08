@@ -1,17 +1,17 @@
 package com.zcy.cn.controller;
 
+import com.zcy.cn.annotation.TokenModel;
 import com.zcy.cn.bean.ResultHttp;
 import com.zcy.cn.bean.Users;
 import com.zcy.cn.service.UserService;
+import com.zcy.cn.vo.AnnotationUser;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -34,11 +34,21 @@ public class UserController {
 
     @ApiOperation(value = "用户注册", notes = "用户注册接口")
     @PostMapping("/reg")
-    public ResultHttp register(@RequestBody Users userInfo) {
-        if (!StringUtils.isEmpty(userInfo.getOpenId())) {
+    @TokenModel
+    public ResultHttp register(@RequestBody Users userInfo, HttpServletRequest request, AnnotationUser annotationUser) {
+        String openId = (String) request.getAttribute("openId");
+        if (!StringUtils.isEmpty(openId)) {
+            userInfo.setOpenId(openId);
             return ResultHttp.builder().code(1).result(userService.reg(userInfo)).build();
         }
         return ResultHttp.builder().code(0).result("数据库中已存在记录").build();
+    }
+
+
+    @ResponseBody
+    @GetMapping("/no/login")
+    public ResultHttp logout() {
+        return ResultHttp.builder().code(0).result("暂未登录").build();
     }
 
 

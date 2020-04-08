@@ -5,10 +5,12 @@ import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.PathMatcher;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -49,7 +51,12 @@ public class FilterRole extends ZuulFilter {
         RequestContext context = RequestContext.getCurrentContext();
         HttpServletRequest request = context.getRequest();
         String originServerUrl = request.getRequestURI();
-        List<String> filterApi = Arrays.stream(whiteApi).filter(var -> originServerUrl.equals("/v1/api"+var)).collect(Collectors.toList());
+
+        PathMatcher pathMatcher = new AntPathMatcher();
+        List<String> filterApi = Arrays.asList(whiteApi).stream().filter(var ->
+                pathMatcher.match(var, originServerUrl)
+        ).collect(Collectors.toList());
+
         if (!CollectionUtils.isEmpty(filterApi)) {
             // 不拦截
             return false;
@@ -64,8 +71,13 @@ public class FilterRole extends ZuulFilter {
         RequestContext context = RequestContext.getCurrentContext();
         HttpServletRequest request = context.getRequest();
         String orginToken = request.getHeader("Token");
-        // TODO
-
+        if (StringUtils.isEmpty(orginToken)) {
+            // 伪造请求
+            context.setSendZuulResponse(false);
+            context.setResponseStatusCode(401);
+            context.getResponse().setContentType("application/json;charset=UTF-8");
+            context.setResponseBody("{\"code\":0,\"result\":\"暂未登录\"}");
+        }
         return null;
     }
 

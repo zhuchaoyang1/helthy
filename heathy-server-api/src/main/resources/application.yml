@@ -1,23 +1,26 @@
 spring:
   profiles:
-    active: online,redis,dao
+    active: redis,dao,@profiles.active@
 
 # 加密
 jwt:
   secret: geiwodiangasfdjsikolkjikolkijswe
 
-myeureka:
-  server:
-    localhost
-  port:
-    8761
+server:
+  port: 8080
+
+wechat:
+  server: https://api.weixin.qq.com
+  appid: wxfcb47ae4ad192245
+  secret: 4a8e527806dad877f102428825049bdb
+
+logging:
+  level:
+    com.zcy.cn.feign.wechat.server.Auth: debug
+
+white:
+  list: /user/login,/actuator/**
 
 eureka:
-  instance:
-    preferIpAddress: true
-    instance-id: ${spring.cloud.client.ip-address}:${server.port}
   client:
-    serviceUrl:
-      defaultZone: http://${myeureka.server}:${myeureka.port}/eureka/
-    register-with-eureka: true
-    fetch-registry: true
+    enabled: false

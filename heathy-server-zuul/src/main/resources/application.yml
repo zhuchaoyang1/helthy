@@ -64,4 +64,4 @@ info:
   description: zuul-router
 
 white:
-  list: /user/login,/user/reg
+  list: /user/login,/actuator/**
