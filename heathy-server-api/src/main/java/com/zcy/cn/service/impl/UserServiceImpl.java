@@ -87,4 +87,9 @@ public class UserServiceImpl implements UserService {
         return userDao.save(users).createUserVO();
     }
 
+    @Override
+    public void update() {
+        userDao.update();
+    }
+
 }

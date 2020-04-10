@@ -1,0 +1,38 @@
+# 用于控制quartz
+spring:
+  quartz:
+    #相关属性配置
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: DefaultQuartzScheduler
+            instanceId: AUTO
+          jobStore:
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            tablePrefix: QRTZ_
+            isClustered: false
+            clusterCheckinInterval: 10000
+            useProperties: true
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 10
+            threadPriority: 5
+            threadsInheritContextClassLoaderOfInitializingThread: true
+          dataSource:
+            default:
+              URL: jdbc:mysql://localhost:3306/healthy?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2b8
+              user: root
+              password: 123456
+              driver: com.mysql.jdbc.Driver
+              connectionProvider:
+                class: com.zcy.cn.quartz.datapooldruid.DruidConnectionProvider
+    # 选择JDBC持久
+    job-store-type: jdbc
+    #初始化表结构
+    jdbc:
+      initialize-schema: always
+
+email:
+  corn: 0/5 * * * * ?

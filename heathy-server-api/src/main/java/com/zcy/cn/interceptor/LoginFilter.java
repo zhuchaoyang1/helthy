@@ -53,6 +53,8 @@ public class LoginFilter implements Filter {
         if (request.getMethod().equals(RequestMethod.OPTIONS.name()) || !CollectionUtils.isEmpty(contrastList)) {
             // Options预请求 && 白名单
             flag = true;
+            servletRequest.setAttribute("openId", null);
+            servletRequest.setAttribute("uId", null);
         } else {
             String token = request.getHeader("Token");
             if (!StringUtils.isEmpty(token)) {

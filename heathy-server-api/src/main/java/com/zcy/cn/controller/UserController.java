@@ -45,11 +45,9 @@ public class UserController {
     }
 
 
-    @ResponseBody
     @GetMapping("/no/login")
     public ResultHttp logout() {
         return ResultHttp.builder().code(0).result("暂未登录").build();
     }
-
 
 }

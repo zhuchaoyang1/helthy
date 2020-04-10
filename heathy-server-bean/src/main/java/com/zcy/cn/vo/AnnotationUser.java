@@ -15,5 +15,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AnnotationUser {
     private String openId;
-    private Integer uId;
+    private Long uId;
 }

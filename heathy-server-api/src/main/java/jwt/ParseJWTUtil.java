@@ -32,13 +32,25 @@ public class ParseJWTUtil {
      * @throws JOSEException
      */
     public Map<String, Object> valid(String token) throws ParseException, JOSEException {
-        // 解析token
-        JWSObject jwsObject = JWSObject.parse(token);
+        Map<String, Object> resultMap = new HashMap<>();
+        JWSObject jwsObject = null;
+        try {
+            // 解析token
+            jwsObject = JWSObject.parse(token);
+        } catch (Exception e) {
+            Map<String, Object> payload = new HashMap<>(2);
+            payload.put("openId", null);
+            payload.put("userId", null);
+            resultMap.put("Result", 1);
+            resultMap.put("Data", payload);
+            return resultMap;
+        }
+
         //获取到载荷
         Payload payload = jwsObject.getPayload();
         //建立一个解锁密匙
         JWSVerifier jwsVerifier = new MACVerifier(jwtSecret.getBytes());
-        Map<String, Object> resultMap = new HashMap<>();
+
         //判断token
         if (jwsObject.verify(jwsVerifier)) {
             // Token正常比标识

@@ -29,3 +29,30 @@
 ### 六、服务监控
 API使用hystrix-dashboard服务及流量监控
 ```http://host:port/hystrix```
+
+### 七、任务调度框架
+本项目告警日志由quartz任务调度框架  
+官网地址：http://www.quartz-scheduler.org/  
+SpringBoot对quartz支持：  
+https://docs.spring.io/spring-boot/docs/2.1.14.BUILD-SNAPSHOT/reference/html/boot-features-quartz.html
+```
+quartz默认配置：
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+``` 
+- 出于性能考虑项目中替换了quartz默认的c3p0单线程连接池
+- 因为项目定时任务相对简单，只是收集ERROR级别日志定期发送邮件
+因此没有配置集群。  
+  
+### 八、数据库连接池：Alibaba/Druid
+Github地址：https://github.com/alibaba/druid  
+在本项目中运用：
+-   连接池监控
+-   SQL防注入
+```
+监控页面：http://ip:port/druid/index.html
+```

@@ -12,4 +12,6 @@ public interface UserService {
 
     UsersVO reg(Users users);
 
+    void update();
+
 }

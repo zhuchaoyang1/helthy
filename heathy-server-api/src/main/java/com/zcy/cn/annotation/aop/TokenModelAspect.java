@@ -33,9 +33,10 @@ public class TokenModelAspect {
 
         Arrays.asList(args).forEach(var -> {
             if (var instanceof HttpServletRequest) {
-                annotationUser.setOpenId(((HttpServletRequest) var).getAttribute("openId").toString());
+                Object objOpenId = ((HttpServletRequest) var).getAttribute("openId");
+                annotationUser.setOpenId(objOpenId == null ? null : objOpenId.toString());
                 Object objUId = ((HttpServletRequest) var).getAttribute("userId");
-                annotationUser.setUId(objUId == null ? null : Integer.parseInt(objUId.toString()));
+                annotationUser.setUId(objUId == null ? null : Long.valueOf(objUId.toString()));
             }
         });
 

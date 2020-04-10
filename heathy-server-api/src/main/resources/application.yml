@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: redis,dao,@profiles.active@
+    active: redis,dao,@profiles.active@,quartz
 
 # 加密
 jwt:
@@ -19,7 +19,7 @@ logging:
     com.zcy.cn.feign.wechat.server.Auth: debug
 
 white:
-  list: /user/login,/actuator/**
+  list: /user/login,/actuator/**,/log/save,/user/no/login,/druid/**,/*.ico
 
 eureka:
   client:
