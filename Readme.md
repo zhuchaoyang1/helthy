@@ -55,4 +55,14 @@ Github地址：https://github.com/alibaba/druid
 -   SQL防注入
 ```
 监控页面：http://ip:port/druid/index.html
-```
+```  
+
+
+### 九、日志配置级别告警
+相关配置在```heathy-server-api```中```application.yml```中目前只负责ERROR Leavel入表  
+下面为可配置项：  
+-   触发器CORN：目前配置为每隔一小时发送邮件
+-   日志级别：
+包括邮件发送级别（注：此处配置的邮件级别严格按照Log日志级别优先级配置，比如
+配置文件中配置的为DEBUG级别，那么优先级比DEBUG高的都符合邮件告警要求）
+-   详细日志查看<A>标签回调服务，项目更换域名后，需要修改此处地址，否则邮件中无法进行服务回调

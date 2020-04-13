@@ -1,6 +1,10 @@
 spring:
   profiles:
     active: redis,dao,@profiles.active@,quartz
+  mail:
+    host: smtp.163.com
+    username: zhuchaoyang_1@163.com
+    password: ZGSEJUUCGYIMJWFJ
 
 # 加密
 jwt:
@@ -19,8 +23,18 @@ logging:
     com.zcy.cn.feign.wechat.server.Auth: debug
 
 white:
-  list: /user/login,/actuator/**,/log/save,/user/no/login,/druid/**,/*.ico
+  list: /user/login,/user/no/login,/log/save,/druid/**,/*.ico,/log/by/id/**,/actuator/**
 
 eureka:
   client:
     enabled: false
+
+email:
+  # 邮件发送触发器  目前为每隔一个小时进行发送
+  corn: 0 0 0/1 * * ?
+  log:
+    # ERROR级别以上需要发送
+    leavel: ERROR
+  # TODO 邮件日志简讯链接  回调地址  项目上线需要修改此处
+  server: http://localhost:8080
+

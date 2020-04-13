@@ -11,12 +11,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.quartz.JobDetail;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 /**
  * 收集来自小程序端、网页的Error日志
@@ -36,6 +35,12 @@ public class FontLogController {
     public ResultHttp saveLog(@RequestBody Logs logs, HttpServletRequest request, AnnotationUser annotationUser) {
         logs.setUId(annotationUser.getUId());
         return ResultHttp.builder().code(logService.save(logs) ? 0 : 1).result(null).build();
+    }
+
+    @GetMapping("/by/id/{id}")
+    public String query(@PathVariable Long id) {
+        Optional<Logs> op = logService.findById(id);
+        return op.orElseGet(() -> new Logs()).getLogInfo();
     }
 
 

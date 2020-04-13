@@ -33,6 +33,3 @@ spring:
     #初始化表结构
     jdbc:
       initialize-schema: always
-
-email:
-  corn: 0/5 * * * * ?
