@@ -13,7 +13,6 @@ import javax.annotation.PostConstruct;
 
 @Slf4j
 @Component
-@Profile("mail")
 public class JobStarter {
 
     @Autowired
