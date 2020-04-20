@@ -20,8 +20,8 @@ import java.util.Map;
  * 依赖于微信服务  heathy-server-redis组件
  */
 @RestController
-@RequestMapping("/user")
 @Api("微信小程序登录接口")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
