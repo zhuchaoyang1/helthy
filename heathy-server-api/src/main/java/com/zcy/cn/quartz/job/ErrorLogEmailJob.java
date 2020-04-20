@@ -1,5 +1,6 @@
 package com.zcy.cn.quartz.job;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.zcy.cn.bean.Logs;
 import com.zcy.cn.enums.LogEnum;
 import com.zcy.cn.service.LogService;
@@ -49,6 +50,11 @@ public class ErrorLogEmailJob implements Job {
         log.info("发送{}运维邮件，当前时间点：{}", emailLogLeavel, LocalDateTime.now());
         List<LogEnum> logEnums = Arrays.asList(LogEnum.values()).stream().filter(var -> var.getLeavel().equals(emailLogLeavel.toUpperCase())).collect(Collectors.toList());
         List<Map<String, List<Logs>>> logsResult = new ArrayList<>();    // Key --> 日志级别  value --> 查询Logs对应集合
+
+        // 闭包中只能使用对象方式 用于空包发送邮件告警
+        Boolean[] isNeedSendEmail = new Boolean[1];
+        isNeedSendEmail[0] = false;
+
         if (!CollectionUtils.isEmpty(logEnums)) {
             LogEnum fromYml = logEnums.get(0);
             List<LogEnum> greaterThanLeavels = Arrays.asList(LogEnum.values()).stream().filter(var -> fromYml.getIndex() <= var.getIndex()).collect(Collectors.toList());
@@ -57,11 +63,11 @@ public class ErrorLogEmailJob implements Job {
                 Map<String, List<Logs>> currentLeavelLogs = new HashMap<>();
                 // 直接对持久态的数据进行修改为已发送邮件
                 List<Logs> noSenderLogs = logService.findAllByLeavelAndHasSendEmail(var.getLeavel(), false).getContent();
+                isNeedSendEmail[0] = !noSenderLogs.isEmpty();
                 this.changePersist(noSenderLogs);
                 currentLeavelLogs.put(var.getLeavel(), noSenderLogs);
                 logsResult.add(currentLeavelLogs);
             });
-
         }
 
         // Build HTML sgement. Use StringBuffer for performance, Because splicing is often needed
@@ -95,12 +101,15 @@ public class ErrorLogEmailJob implements Job {
 
         stringBuffer.append("</table>");
 
-        boolean sendFlag = this.sendMail(stringBuffer);
-        if (sendFlag) {
-            log.info("\n 邮件发送成功，邮件主题：Healthy平台日志运维，日志级别 > {}", emailLogLeavel);
-        } else {
-            log.info("\n 邮件发送失败，失败日志\n");
+        if (isNeedSendEmail[0]) {
+            boolean sendFlag = this.sendMail(stringBuffer);
+            if (sendFlag) {
+                log.info("\n 邮件发送成功，邮件主题：Healthy平台日志运维，日志级别 > {}", emailLogLeavel);
+            } else {
+                log.info("\n 邮件发送失败，失败日志\n");
+            }
         }
+
     }
 
     /**

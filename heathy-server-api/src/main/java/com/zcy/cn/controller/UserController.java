@@ -11,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
@@ -43,7 +44,6 @@ public class UserController {
         }
         return ResultHttp.builder().code(0).result("数据库中已存在记录").build();
     }
-
 
     @GetMapping("/no/login")
     public ResultHttp logout() {
