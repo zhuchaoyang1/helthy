@@ -12,26 +12,38 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * 菜品
+ * 根据BMI几种状态 定制化 主食食用量
+ * 瘦、偏瘦、标准呢、偏胖、肥胖、极度肥胖
  */
-@Entity
-@Table(name = "h_dish")
-@Builder
 @Data
+@Entity
+@Table(name = "h_custom")
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Dish {
+public class Custom {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long dId;
+    private Long cId;
 
     @Column
-    private Long dbiId;     // DishBig外键
+    private Long sId;     // super大类别表外键
 
-    @Column(length = 20)
-    private String name;
+    /**
+     * 0：瘦
+     * 1：偏瘦
+     * 2：标准
+     * 3：偏胖
+     * 4：肥胖
+     * 5：极度肥胖
+     */
+    @Column(length = 3)
+    private Integer bmiFlag;
+
+    @Column(columnDefinition = "double (7,2)")
+    private Double cWeight;
 
     /**
      * 入库时间
@@ -46,5 +58,4 @@ public class Dish {
     @LastModifiedDate
     @Column
     private Date modifyTime;
-
 }

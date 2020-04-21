@@ -42,4 +42,9 @@ public class DishServiceImpl implements DishService {
     public void delete(Dish dish) {
         dishDao.delete(dish);
     }
+
+    @Override
+    public List<Dish> saveBatchDish(List<Dish> dishes) {
+        return dishDao.saveAll(dishes);
+    }
 }

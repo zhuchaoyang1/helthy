@@ -15,4 +15,6 @@ public interface BigDishService {
 
     void delete(DishBig dishBig);
 
+    List<DishBig> updateOrSaveBatch(List<DishBig> dishBigs);
+
 }

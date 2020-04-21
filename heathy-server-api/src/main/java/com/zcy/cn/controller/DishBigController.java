@@ -7,6 +7,8 @@ import com.zcy.cn.vo.DishBigVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/big/dish")
 public class DishBigController {
@@ -17,6 +19,11 @@ public class DishBigController {
     @PostMapping("/insert")
     public ResultHttp saveBigDish(@RequestBody DishBigVO dishBigVO) {
         return ResultHttp.builder().code(1).result(bigDishService.save(dishBigVO)).build();
+    }
+
+    @PostMapping("/update/save/batch")
+    public ResultHttp updateOrSaveBatch(@RequestBody List<DishBig> dishBigList) {
+        return ResultHttp.builder().code(1).result(bigDishService.updateOrSaveBatch(dishBigList)).build();
     }
 
     @GetMapping("/query/all")

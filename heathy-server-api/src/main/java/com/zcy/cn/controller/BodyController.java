@@ -4,8 +4,11 @@ import com.zcy.cn.annotation.TokenModel;
 import com.zcy.cn.bean.BodyArgs;
 import com.zcy.cn.bean.ResultHttp;
 import com.zcy.cn.bean.Users;
+import com.zcy.cn.enums.BmiEnum;
 import com.zcy.cn.service.BodyArgsService;
 import com.zcy.cn.service.UserService;
+import com.zcy.cn.util.BmiUtil;
+import com.zcy.cn.util.StandardWeightUtil;
 import com.zcy.cn.vo.AnnotationUser;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,6 +35,10 @@ public class BodyController {
 
     @Autowired
     private BodyArgsService bodyArgsService;
+    @Autowired
+    private BmiUtil bmiUtil;
+    @Autowired
+    private StandardWeightUtil standardWeightUtil;
 
     // 线程安全 --> SimpleDataFormatter非线程安全所以每次使用需要创建局部独立对象
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -40,12 +47,15 @@ public class BodyController {
     @ApiOperation(value = "保存Body参数", notes = "保存Body参数")
     @PostMapping("/save")
     @TokenModel
-    public ResultHttp login(@RequestBody BodyArgs bodyArgs, HttpServletRequest request, AnnotationUser annotationUser) {
+    public ResultHttp save(@RequestBody BodyArgs bodyArgs, HttpServletRequest request, AnnotationUser annotationUser) {
         bodyArgs.setUId(annotationUser.getUId());
+        double bmi = bmiUtil.caculateBodyByBmi(bodyArgs);
+        String bodyStatus = bmiUtil.caculateText(bodyArgs.getStandard(), bmi);
+        bodyArgs.setBodyStatus(bodyStatus);
         return ResultHttp.builder().code(1).result(bodyArgsService.save(bodyArgs)).build();
     }
 
-    @ApiOperation(value = "查询用户四次身体参数数据", notes = "并构造Echarts数据和标准体重数据")
+    @ApiOperation(value = "查询用户四条身体参数数据", notes = "并构造Echarts数据和标准体重数据")
     @GetMapping
     @TokenModel
     public ResultHttp myStandard(HttpServletRequest request, AnnotationUser annotationUser) {
@@ -73,11 +83,11 @@ public class BodyController {
                 // 时间节点
                 xAxisDate.add(formatter.format(instant.atZone(ZoneId.systemDefault()).toLocalDate()));
                 // 标准体重
-                yAxisStandard.add(caculateStandardWeight(var));
+                yAxisStandard.add(standardWeightUtil.caculateStandardWeight(var));
                 // 实际体重
                 yAxisTrue.add(var.getWeight());
                 // bmi 体重(千克)/身高的平方(米)
-                yAxisBim.add(Math.round(var.getWeight() / Math.pow((var.getHeight() / 100.0), 2) * 100) / 100.0);
+                yAxisBim.add(bmiUtil.caculateBodyByBmi(var));
                 stand[0] = var.getStandard();
             });
 
@@ -88,20 +98,8 @@ public class BodyController {
             high = Math.round(high * 100.0) / 100.0;
 
             // 根据当前不同的标准BMI区间
-            Double[] bmiQujian = new Double[5];
-            switch (stand[0]) {
-                case 0: {
-                    bmiQujian = new Double[]{18.5, 25.0, 30.0, 35.0, 40.0};
-                    break;
-                }
-                case 1: {
-                    bmiQujian = new Double[]{18.5, 23.0, 25.0, 30.0, 40.0};
-                    break;
-                }
-                case 2: {
-                    bmiQujian = new Double[]{18.5, 24.0, 28.0, 30.0, 40.0};
-                }
-            }
+            Double[] bmiQujian;
+            bmiQujian = Arrays.stream(BmiEnum.values()).filter(var -> stand[0] == var.getStandardIndex()).findFirst().orElse(BmiEnum.CHINASTAND).getDoubles();
 
             resultMap.put("xAxisDate", xAxisDate);
             resultMap.put("yAxisStandard", yAxisStandard);
@@ -127,26 +125,5 @@ public class BodyController {
         return ResultHttp.builder().code(1).result(times).build();
     }
 
-    private double caculateStandardWeight(BodyArgs bodyArgs) {
-        switch (bodyArgs.getStandard()) {
-            case 0: {
-                // WHO
-                if (bodyArgs.getGender()) {
-                    // true 女 (身高cm－70)×60﹪=标准体重
-                    return Math.round((bodyArgs.getHeight() - 70) * 0.6 * 100) / 100.0;
-                } else {
-                    // false 男 (身高cm－80)×70﹪=标准体重
-                    return Math.round((bodyArgs.getHeight() - 80) * 0.7 * 100) / 100.0;
-                }
-            }
-            case 1:
-            case 2: {
-                // 亚洲标准
-                // [身高（cm）-100]×0.9
-                return Math.round((bodyArgs.getHeight() - 100) * 0.9 * 100.0) / 100.0;
-            }
-        }
-        return 0.0;
-    }
 
 }

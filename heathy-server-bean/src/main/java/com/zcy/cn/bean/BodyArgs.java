@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -44,6 +45,9 @@ public class BodyArgs {
 
     @Column(columnDefinition = "double (8,3)")
     private Double weight;
+
+    @Column(length = 5)
+    private String bodyStatus;
 
     /**
      * 入库时间

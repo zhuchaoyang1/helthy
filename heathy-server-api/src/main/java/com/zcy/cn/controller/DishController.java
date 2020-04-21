@@ -5,7 +5,10 @@ import com.zcy.cn.bean.ResultHttp;
 import com.zcy.cn.service.DishService;
 import com.zcy.cn.vo.DishVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/dish")
@@ -15,8 +18,13 @@ public class DishController {
     private DishService dishService;
 
     @PostMapping("/insert")
-    public ResultHttp saveBigDish(@RequestBody DishVO dishVO) {
+    public ResultHttp saveDish(@RequestBody DishVO dishVO) {
         return ResultHttp.builder().code(1).result(dishService.save(dishVO)).build();
+    }
+
+    @PostMapping("/update/save/batch")
+    public ResultHttp saveBatchDish(@RequestBody List<Dish> dishes) {
+        return ResultHttp.builder().code(1).result(dishService.saveBatchDish(dishes)).build();
     }
 
     @GetMapping("/query/all")

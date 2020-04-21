@@ -12,23 +12,20 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * 菜品
+ * 菜单超级大类
  */
 @Entity
-@Table(name = "h_dish")
+@Table(name = "h_super_dish")
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Dish {
+public class SuperDish {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long dId;
-
-    @Column
-    private Long dbiId;     // DishBig外键
+    private Long sId;
 
     @Column(length = 20)
     private String name;

@@ -37,4 +37,3 @@ email:
     leavel: ERROR
   # TODO 邮件日志简讯链接  回调地址  项目上线需要修改此处
   server: http://localhost:8080
-

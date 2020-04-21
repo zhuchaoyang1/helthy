@@ -19,6 +19,8 @@ public class DishBigVO {
 
     private String icon;    // 记录Icon名
 
+    private Long dSId;  // SuperDish外键
+
     private String instructions;
 
     public DishBig createDisBig() {

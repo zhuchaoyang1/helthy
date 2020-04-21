@@ -47,5 +47,10 @@ public class BigDishServiceImpl implements BigDishService {
         dishBigDao.delete(dishBig);
     }
 
+    @Override
+    public List<DishBig> updateOrSaveBatch(List<DishBig> dishBigs) {
+        return dishBigDao.saveAll(dishBigs);
+    }
+
 
 }
