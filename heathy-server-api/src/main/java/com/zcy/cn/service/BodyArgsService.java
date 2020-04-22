@@ -5,6 +5,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public interface BodyArgsService {
 
@@ -14,4 +15,5 @@ public interface BodyArgsService {
 
     List<Date> findUpdateTimeById(Long uid);
 
+    BodyArgs findLastByUId(Long uId);
 }

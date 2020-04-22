@@ -12,6 +12,6 @@ public interface UserService {
 
     UsersVO reg(Users users);
 
-    void update();
+    Users findById(Long id);
 
 }

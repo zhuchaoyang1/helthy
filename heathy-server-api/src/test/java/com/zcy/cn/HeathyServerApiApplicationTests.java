@@ -1,6 +1,8 @@
 package com.zcy.cn;
 
+import com.zcy.cn.bean.BodyArgs;
 import com.zcy.cn.bean.Logs;
+import com.zcy.cn.dao.BodyArgsDao;
 import com.zcy.cn.quartz.common.bean.Management;
 import com.zcy.cn.quartz.common.bean.QuartzJobDetailTriggerBean;
 import com.zcy.cn.quartz.job.ErrorLogEmailJob;
@@ -21,6 +23,15 @@ public class HeathyServerApiApplicationTests {
 
     @Autowired
     private LogService logService;
+
+    @Autowired
+    private BodyArgsDao bodyArgsDao;
+
+    @Test
+    public void contextLoads() {
+        BodyArgs bodyArgs = bodyArgsDao.findLastBody(1L);
+        log.info(bodyArgs.toString());
+    }
 
     // Quartz测试
     @Test

@@ -38,4 +38,9 @@ public class BodyArgsServiceImpl implements BodyArgsService {
         return bodyArgsDao.findCreatedTimeById(uid);
     }
 
+    @Override
+    public BodyArgs findLastByUId(Long uId) {
+        return bodyArgsDao.findLastBody(uId);
+    }
+
 }

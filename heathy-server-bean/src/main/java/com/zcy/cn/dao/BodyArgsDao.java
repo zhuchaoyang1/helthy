@@ -17,4 +17,7 @@ public interface BodyArgsDao extends JpaRepository<BodyArgs, Long> {
     @Query(value = "SELECT bodys.createTime FROM BodyArgs bodys WHERE bodys.uId = :uId")
     List<Date> findCreatedTimeById(@Param("uId") Long uid);
 
+    @Query(value = "SELECT bodys.* FROM h_body bodys WHERE bodys.u_id = :uId ORDER BY bodys.b_id DESC LIMIT 1", nativeQuery = true)
+    BodyArgs findLastBody(@Param("uId") Long uId);
+
 }

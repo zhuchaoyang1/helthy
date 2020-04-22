@@ -11,9 +11,5 @@ public interface UserDao extends JpaRepository<Users, Long> {
 
     Users findByOpenId(String openId);
 
-    @Transactional
-    @Modifying
-    @Query("update Users u set u.nickName=111 where 1=1")
-    void update();
 
 }

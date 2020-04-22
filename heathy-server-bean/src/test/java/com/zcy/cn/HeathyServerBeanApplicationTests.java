@@ -1,13 +1,9 @@
 package com.zcy.cn;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class HeathyServerBeanApplicationTests {
+public class HeathyServerBeanApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
 
 }

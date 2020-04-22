@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -30,6 +29,9 @@ public class BodyArgs {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bId;
 
+    /**
+     * 用户外键
+     */
     @Column
     private Long uId;
 
