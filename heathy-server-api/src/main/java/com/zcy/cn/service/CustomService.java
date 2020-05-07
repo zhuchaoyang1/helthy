@@ -14,5 +14,5 @@ public interface CustomService {
 
     List<Custom> saveOrUpdateBatch(List<Custom> customs);
 
-    List<Map<String, Object>> buildCustomByBmi(AnnotationUser annotationUser);
+    Map<String, Object> buildCustomByBmi(AnnotationUser annotationUser);
 }

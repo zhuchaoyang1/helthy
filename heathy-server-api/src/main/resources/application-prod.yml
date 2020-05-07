@@ -24,3 +24,6 @@ info:
   app.name: heathy-server-api
   description: Providing services to wechat
 
+local:
+  upload:
+    img: /src/main/resources/static

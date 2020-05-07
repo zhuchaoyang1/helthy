@@ -11,4 +11,8 @@ public interface SuperDishService {
     List<SuperDish> saveOrUpdateAll(List<SuperDish> superDishes);
 
     List<SuperDish> queryAll();
+
+    int getSuperCount();
+
+
 }

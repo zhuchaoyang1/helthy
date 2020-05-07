@@ -12,6 +12,7 @@ public interface CustomDao extends JpaRepository<Custom, Long> {
 
     @Query(value = "SELECT " +
             "new com.zcy.cn.dto.CustomDTO(sup.name, " +
+            "sup.sId, " +
             "big.smallName, " +
             "big.instructions, " +
             "dish.name, " +

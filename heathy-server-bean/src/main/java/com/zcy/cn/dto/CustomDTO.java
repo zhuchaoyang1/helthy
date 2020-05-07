@@ -33,9 +33,10 @@ public class CustomDTO {
     public Integer bmiFlag;
     public Double cWeight;
 
-    public CustomDTO(String name, String smallName, String instructions,
+    public CustomDTO(String name, Long sId, String smallName, String instructions,
                      String dishBigName, Long dbId, String icon, Double cWeight, Integer bmiFlag) {
         this.name = name;
+        this.sId = sId;
         this.smallName = smallName;
         this.instructions = instructions;
         this.dishBigName = dishBigName;

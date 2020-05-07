@@ -32,4 +32,9 @@ public class SuperDishServiceImpl implements SuperDishService {
     public List<SuperDish> queryAll() {
         return superDishDao.findAll();
     }
+
+    @Override
+    public int getSuperCount() {
+        return Integer.parseInt("" + superDishDao.count());
+    }
 }

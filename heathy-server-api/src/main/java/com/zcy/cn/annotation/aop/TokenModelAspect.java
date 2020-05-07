@@ -24,7 +24,7 @@ public class TokenModelAspect {
     private LogService logService;
 
     @Pointcut("@annotation(com.zcy.cn.annotation.TokenModel)")
-    private void pointcut() {
+        private void pointcut() {
     }
 
     /**
