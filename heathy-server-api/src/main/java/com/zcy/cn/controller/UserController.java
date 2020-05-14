@@ -1,5 +1,6 @@
 package com.zcy.cn.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.zcy.cn.annotation.TokenModel;
 import com.zcy.cn.bean.ResultHttp;
 import com.zcy.cn.bean.Users;
@@ -9,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
@@ -27,6 +29,12 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Value("${admin.uName:admin}")
+    private String adminUName;
+
+    @Value("${admin.uPwd:zhuchaoyang}")
+    private String adminUPwd;
+
     @ApiOperation(value = "用户登录", notes = "用户登录接口")
     @PostMapping("/login")
     public ResultHttp login(@RequestBody Map<String, String> map) {
@@ -42,7 +50,7 @@ public class UserController {
             userInfo.setOpenId(openId);
             return ResultHttp.builder().code(1).result(userService.reg(userInfo)).build();
         }
-        return ResultHttp.builder().code(0).result("数据库中已存在记录").build();
+        return ResultHttp.builder().code(0).result("OpenId为空").build();
     }
 
     @GetMapping("/no/login")
@@ -50,4 +58,16 @@ public class UserController {
         return ResultHttp.builder().code(0).result("暂未登录").build();
     }
 
+    @PostMapping("/admin/login")
+    public ResultHttp adminLogin(@RequestBody JSONObject jsonObject) {
+        boolean flag = false;
+        if (jsonObject.containsKey("uName") && jsonObject.containsKey("uPwd")) {
+            Object uName = jsonObject.get("uName");
+            Object uPwd = jsonObject.get("uPwd");
+            if (adminUName.equals(String.valueOf(uName)) && adminUPwd.equals(String.valueOf(uPwd))) {
+                flag = true;
+            }
+        }
+        return ResultHttp.builder().code(1).result(flag ? "ok" : "error").build();
+    }
 }

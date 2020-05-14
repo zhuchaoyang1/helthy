@@ -3,3 +3,8 @@ management:
     web:
       exposure:
         include: ["info","health","hystrix.stream"]
+
+# 管理员为单用户  不设立数据库  后期可结合github-config动态配置
+admin:
+  uName: admin
+  uPwd: zhuchaoyang

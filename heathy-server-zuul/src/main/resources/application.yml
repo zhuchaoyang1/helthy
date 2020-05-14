@@ -1,9 +1,9 @@
 server:
   port: 1031
 
-#spring:
-#  application:
-#    name: service-zuul
+spring:
+  application:
+    name: service-zuul
 #  security:
 #    user:
 #      name: admin
@@ -28,7 +28,6 @@ eureka:
 
 zuul:
   routes:
-    # 任意起名  保证多个规则不冲突
     cunsumer:
       serviceId: api
       path: /v1/api/**
@@ -40,8 +39,8 @@ zuul:
     policies:
       cunsumer:
         limit: 100
-        quota: 1000           # 当前单位为秒
-        refresh-interval: 60  # 当前单位为秒
+        quota: 1000
+        refresh-interval: 60
         type:
         - ORIGIN
     retryable: true

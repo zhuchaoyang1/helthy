@@ -1,5 +1,6 @@
 package com.zcy.cn.interceptor;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
@@ -47,6 +48,7 @@ public class FilterRole extends ZuulFilter {
      * @return
      */
     @Override
+    @HystrixCommand
     public boolean shouldFilter() {
         RequestContext context = RequestContext.getCurrentContext();
         HttpServletRequest request = context.getRequest();
@@ -56,7 +58,6 @@ public class FilterRole extends ZuulFilter {
         List<String> filterApi = Arrays.asList(whiteApi).stream().filter(var ->
                 pathMatcher.match(var, originServerUrl)
         ).collect(Collectors.toList());
-
         if (!CollectionUtils.isEmpty(filterApi)) {
             // 不拦截
             return false;
@@ -65,6 +66,16 @@ public class FilterRole extends ZuulFilter {
             return true;
         }
     }
+
+    /**
+     * ShoudFilter上的@HystrixCommand注解的优先级比Zuul Filter低
+     * @HistrixCommand上的FallBack不会被执行
+     * @return
+     */
+//    public boolean histrixCommandCallBack() {
+//        log.error("错误信息");
+//        return true;
+//    }
 
     @Override
     public Object run() throws ZuulException {

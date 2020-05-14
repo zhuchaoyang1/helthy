@@ -30,7 +30,7 @@ logging:
     com.zcy.cn.feign.wechat.server.Auth: debug
 
 white:
-  list: /user/login,/user/no/login,/log/save,/druid/**,/*.ico,/log/by/id/**,/actuator/**,/img/**,/common/file/**
+  list: /user/login,/user/no/login,/log/save,/druid/**,/*.ico,/log/by/id/**,/actuator/**,/img/**,/common/file/**,/user/admin/login,/hystrix.stream
 
 eureka:
   client:
@@ -44,3 +44,4 @@ email:
     leavel: ERROR
   # TODO 邮件日志简讯链接  回调地址  项目上线需要修改此处
   server: http://localhost:8080
+

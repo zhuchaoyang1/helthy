@@ -58,7 +58,7 @@ public class LoginFilter implements Filter {
         } else {
             String token = request.getHeader("Token");
             // POSTMAN埋点
-            if (token.equals("POSTMAN")) {
+            if (!StringUtils.isEmpty(token) && token.equals("POSTMAN")) {
                 flag = true;
             }
             if (!StringUtils.isEmpty(token) && !token.equals("POSTMAN")) {
@@ -80,10 +80,9 @@ public class LoginFilter implements Filter {
                     e.printStackTrace();
                     flag = false;
                 }
-            } else {
-                if (!token.equals("POSTMAN")) {
-                    flag = false;
-                }
+            }
+            if(StringUtils.isEmpty(token)) {
+                flag = false;
             }
         }
 
