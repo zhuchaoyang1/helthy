@@ -26,6 +26,4 @@ info:
 
 local:
   upload:
-    img: /src/main/resources/static
-
-
+    img: /heathy-server-api/src/main/resources/static

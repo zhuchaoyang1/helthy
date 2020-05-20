@@ -1,6 +1,7 @@
 package com.zcy.cn.service.impl;
 
 import com.zcy.cn.bean.ArticlePing;
+import com.zcy.cn.bean.Users;
 import com.zcy.cn.dao.ArticlePingDao;
 import com.zcy.cn.service.ArticlePingService;
 import com.zcy.cn.vo.ArticlePingVO;
@@ -31,11 +32,13 @@ public class ArticlePingServiceImpl implements ArticlePingService {
     @Override
     public List<ArticlePingVO> findAllByIAIdOrderByAPIdDesc(Long iAId, Pageable pageable) {
         List<ArticlePingVO> result = articlePingDao.findAllByiAIdOrderByaPIdDesc(iAId, pageable).stream().map(var -> {
+            ArticlePingVO articlePingVO = new ArticlePingVO();
             UsersVO usersVO = new UsersVO();
-            BeanUtils.copyProperties(var.getUsers(), usersVO);
-            var.setUsers(null);
-            var.setUsersVO(usersVO);
-            return var;
+            BeanUtils.copyProperties(var.getUsers(), usersVO, "uId");
+
+            articlePingVO.setArticlePing(var.getArticlePing());
+            articlePingVO.setUsersVO(usersVO);
+            return articlePingVO;
         }).collect(Collectors.toList());
         return result;
     }

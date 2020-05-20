@@ -3,7 +3,7 @@ server:
 
 spring:
   profiles:
-    active: kafka  # ¥¯…œKafka≈‰÷√
+    active: kafka
   application:
     name: service-zuul
 #  security:
@@ -47,9 +47,22 @@ zuul:
         - ORIGIN
     retryable: true
 
+# Ribbon Inside TimeOut
 ribbon:
-  MaxAutoRetries: 2
+  MaxAutoRetries: 1
   MaxAutoRetriesNextServer: 0
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
+
+# Zuul Inside Hystrix TimeOut
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 20000
+
 
 management:
   endpoints:
@@ -64,5 +77,9 @@ info:
   app.name: heathy-server-zuul
   description: zuul-router
 
+jwt:
+  secret:
+    geiwodiangasfdjsikolkjikolkijswe
+
 white:
-  list: /user/login,/user/no/login,/log/save,/druid/**,/*.ico,/log/by/id/**,/actuator/**,/img/**,/common/file/**,/user/admin/login,/hystrix.stream
+  list: /user/login,/user/no/login,/log/save,/druid/**,/*.ico,/log/by/id/**,/actuator/**,/img/**,/common/file/**,/user/admin/login,/hystrix.stream,/**.png,/**.jpg,/**.gif,/img/**.png,/img/**.jpg,/img/**.gif

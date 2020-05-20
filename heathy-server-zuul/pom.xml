@@ -47,6 +47,19 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
+        <!-- JWT -->
+        <dependency>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+            <version>8.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+        </dependency>
+
+
         <!--
            Zuul配置限流服务POM
            如果不用该Jar自己可以手写一个令牌桶来实现限流 在[掘金]中有相关的记录
@@ -55,6 +68,12 @@
             <groupId>com.marcosbarbero.cloud</groupId>
             <artifactId>spring-cloud-zuul-ratelimit</artifactId>
             <version>2.0.0.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.62</version>
         </dependency>
 
         <dependency>
