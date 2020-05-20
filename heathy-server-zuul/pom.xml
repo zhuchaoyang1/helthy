@@ -41,6 +41,12 @@
             <artifactId>spring-kafka</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.zcy.cn</groupId>
+            <artifactId>heathy-server-kafka-websocket</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
         <!--
            Zuul配置限流服务POM
            如果不用该Jar自己可以手写一个令牌桶来实现限流 在[掘金]中有相关的记录

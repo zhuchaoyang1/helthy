@@ -1,6 +1,7 @@
 package com.zcy.cn.service;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.zcy.cn.bean.Users;
 import com.zcy.cn.vo.UsersVO;
 
@@ -13,5 +14,7 @@ public interface UserService {
     UsersVO reg(Users users);
 
     Users findById(Long id);
+
+    Map<String,Object> adminLogin(JSONObject jsonObject);
 
 }

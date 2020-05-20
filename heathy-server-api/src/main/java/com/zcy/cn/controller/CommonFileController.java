@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,15 +59,18 @@ public class CommonFileController {
      */
     @GetMapping("/{distinct}/{indexs}")
     public ResultHttp findFilePath(@PathVariable Integer distinct, @PathVariable Integer indexs) {
-        String path = "";
+        List<String> paths = new ArrayList<>();
         switch (distinct) {
             case 0: {
-                Img img = imgService.findByIndexs(indexs);
-                if (img != null) path = img.getLocaltionPath();
+                List<Img> imgs = imgService.findByIndexs(indexs);
+                for (Img img : imgs) {
+                    paths.add(img.getLocaltionPath());
+                }
             }
         }
-        return ResultHttp.builder().code(1).result(path).build();
+        return ResultHttp.builder().code(1).result(paths).build();
     }
+
 
     @DeleteMapping("/delete/{distinct}")
     public ResultHttp deleteFileBatch(@RequestBody List<String> filePaths, @PathVariable Integer distinct, HttpSession session) {
@@ -84,4 +88,5 @@ public class CommonFileController {
         }
         return ResultHttp.builder().code(1).result("删除成功").build();
     }
+
 }

@@ -5,10 +5,14 @@ import com.zcy.cn.dao.BodyArgsDao;
 import com.zcy.cn.quartz.common.bean.Management;
 import com.zcy.cn.quartz.common.bean.QuartzJobDetailTriggerBean;
 import com.zcy.cn.quartz.job.ErrorLogEmailJob;
+import com.zcy.cn.service.AccessTokenService;
 import com.zcy.cn.service.LogService;
+import com.zcy.cn.service.VisitFromWechat;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 
@@ -17,10 +21,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @SpringBootTest
@@ -34,6 +35,13 @@ public class HeathyServerApiApplicationTests {
 
     @Autowired
     private BodyArgsDao bodyArgsDao;
+
+    @Autowired
+    private AccessTokenService accessTokenService;
+
+    @Autowired
+    private VisitFromWechat visitFromWechat;
+
 
     @Test
     public void linkedListTest() {
@@ -65,22 +73,31 @@ public class HeathyServerApiApplicationTests {
         log.info(logs.getContent().toString());
     }
 
-//    public static void main(String[] args) {
-//        LinkedList linkedList = new LinkedList();
-//        for (int i = 0; i < 5; i++) {
-//            linkedList.add(i+", ");
-//        }
-//        log.info(linkedList.getFirst().toString());
-//        log.info(linkedList.getLast().toString());
-//        log.info(linkedList.getLast().toString().substring(0,linkedList.getLast().toString().length() - 2));
-//        linkedList.removeLast();
-//        linkedList.add(linkedList.getLast().toString().substring(0,linkedList.getLast().toString().length() - 2));
-//        log.info(linkedList.toString());
-//    }
-
-    public static void main(String[] args) throws Exception {
-
+    // 获取 ACCESSTOKEN
+    @Test
+    public void testGetAccessToken() {
+        Object result = accessTokenService.saveAccessTokenToRedis();
+        log.info(result.toString());
     }
+
+    @Test
+    public void visitTread() {
+        Map<String, String> payLoad = new HashMap<>();
+        payLoad.put("begin_date", "20200511");
+        payLoad.put("end_date", "20200517");
+        String accessToken = accessTokenService.getAccessTokenFromRedis().toString();
+        Object reuslt = visitFromWechat.getVisitTread(accessToken, payLoad);
+    }
+
+    @Test
+    public void visitDaliyTread() {
+        Map<String, String> payLoad = new HashMap<>();
+        payLoad.put("begin_date", "20200518");
+        payLoad.put("end_date", "20200518");
+        String accessToken = accessTokenService.getAccessTokenFromRedis().toString();
+        Object reuslt = visitFromWechat.getDaliyTread(accessToken, payLoad);
+    }
+
 
 
 }

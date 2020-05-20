@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: config-single-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/zhuchaoyang1/config
+          username: zhuchaoyang1
+          password: ZCYSXJ111.q
+          default-label: master
+          search-paths: config

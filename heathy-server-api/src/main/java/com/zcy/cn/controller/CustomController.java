@@ -3,6 +3,8 @@ package com.zcy.cn.controller;
 import com.zcy.cn.annotation.TokenModel;
 import com.zcy.cn.bean.Custom;
 import com.zcy.cn.bean.ResultHttp;
+import com.zcy.cn.dto.AdminCustomChangeDTO;
+import com.zcy.cn.dto.CustomDTO;
 import com.zcy.cn.service.CustomService;
 import com.zcy.cn.vo.AnnotationUser;
 import lombok.extern.slf4j.Slf4j;
@@ -40,5 +42,24 @@ public class CustomController {
     @GetMapping("/query/custom/dish")
     public ResultHttp queryByMyBodyStatus(HttpServletRequest request, AnnotationUser annotationUser) {
         return ResultHttp.builder().code(1).result(customService.buildCustomByBmi(annotationUser)).build();
+    }
+
+    @GetMapping("/admin/{bmi}")
+    public ResultHttp queryAdmin(@PathVariable String bmi) {
+        Integer bmiInt = Integer.parseInt(bmi);
+        List<AdminCustomChangeDTO> result = customService.adminBmiWeights(bmiInt);
+        return ResultHttp.builder().code(1).result(result).build();
+    }
+
+    @PutMapping
+    public ResultHttp updateCWeight(@RequestBody List<AdminCustomChangeDTO> list) {
+        list.forEach(var -> {
+            Custom custom = new Custom();
+            custom.setBmiFlag(var.getBmiFlag());
+            custom.setCWeight(var.getCWeight());
+            custom.setSId(var.getSId());
+            customService.update(custom);
+        });
+        return ResultHttp.builder().code(1).result("更新成功").build();
     }
 }

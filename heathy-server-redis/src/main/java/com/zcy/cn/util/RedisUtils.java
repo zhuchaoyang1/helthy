@@ -25,4 +25,27 @@ public class RedisUtils {
         redisTemplate.expire("session_key", 1, TimeUnit.DAYS);
     }
 
+    /**
+     * 存放小程序唯一凭证 ACCESS_TOKEN
+     *
+     * @param accessToken
+     * @param expireTime
+     */
+    public void putAccessToken(String accessToken, long expireTime) {
+        redisTemplate.delete("ACCESSTOKEN");
+        redisTemplate.opsForValue().append("ACCESSTOKEN", accessToken);
+        // expireTime = 7200
+        expireTime = expireTime / 3600;
+        redisTemplate.expire("ACCESSTOKEN", expireTime, TimeUnit.HOURS);
+    }
+
+    /**
+     * 获取小程序ACCESSTOKEN
+     *
+     * @return
+     */
+    public Object getAccessToken() {
+        return redisTemplate.opsForValue().get("ACCESSTOKEN");
+    }
+
 }

@@ -1,0 +1,19 @@
+server:
+  port: 3301
+
+myeureka:
+  server:
+    localhost
+  port:
+    8761
+
+eureka:
+  instance:
+    preferIpAddress: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    enabled: true
+    serviceUrl:
+      defaultZone: http://${myeureka.server}:${myeureka.port}/eureka/
+    register-with-eureka: true
+    fetch-registry: true

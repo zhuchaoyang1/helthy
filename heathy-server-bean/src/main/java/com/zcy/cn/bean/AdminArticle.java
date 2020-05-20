@@ -25,16 +25,19 @@ public class AdminArticle {
     private Long id;
 
     @Column(length = 30)
-    private String title;
+    private String title;                   // 标题
+
+    @Column(length = 500)
+    private String articleAbs;              // 简介
 
     @Column(columnDefinition = "blob")
-    private String articleAbs;
+    private String article;                 // 文章
 
     @Column
     private Date writerDateTime;
 
     @Column
-    private String writerDateTimeStr;
+    private String writerDateTimeStr;       // 时间字符串
 
     /**
      * 入库时间

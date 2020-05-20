@@ -2,9 +2,15 @@ management:
   endpoints:
     web:
       exposure:
-        include: ["info","health","hystrix.stream"]
+        include: ["info","health","hystrix.stream","refresh"]
 
-# 管理员为单用户  不设立数据库  后期可结合github-config动态配置
-admin:
-  uName: admin
-  uPwd: zhuchaoyang
+# 放在最高级文件中，项目初次启动则会从Github中获取配置
+spring:
+  cloud:
+    config:
+      name: heathy-server-api  # 如果不配置name则默认为当前服务API，则Github config：API-xxx
+      label: master
+      profile: config
+      discovery:
+        enabled: true  # 开启Eureka路由
+        service-id: config-single-server # config-server Application ID

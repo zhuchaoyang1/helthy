@@ -2,6 +2,8 @@ server:
   port: 1031
 
 spring:
+  profiles:
+    active: kafka  # ¥¯…œKafka≈‰÷√
   application:
     name: service-zuul
 #  security:
@@ -63,4 +65,4 @@ info:
   description: zuul-router
 
 white:
-  list: /user/login,/actuator/**
+  list: /user/login,/user/no/login,/log/save,/druid/**,/*.ico,/log/by/id/**,/actuator/**,/img/**,/common/file/**,/user/admin/login,/hystrix.stream

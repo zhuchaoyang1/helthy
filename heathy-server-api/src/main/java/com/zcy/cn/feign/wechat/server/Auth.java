@@ -19,5 +19,4 @@ public interface Auth {
                                   @RequestParam("secret") String secret,
                                   @RequestParam("js_code") String js_code,
                                   @RequestParam("grant_type") String grant_type);
-
 }

@@ -10,4 +10,6 @@ public interface AdminArticleService {
 
     Page<AdminArticle> queryByPage(Pageable pageable);
 
+    AdminArticle findById(Long id);
+
 }

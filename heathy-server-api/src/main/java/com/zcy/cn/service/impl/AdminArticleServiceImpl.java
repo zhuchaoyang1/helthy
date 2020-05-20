@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Slf4j
 @Service
 @Transactional
@@ -27,5 +29,11 @@ public class AdminArticleServiceImpl implements AdminArticleService {
     @Override
     public Page<AdminArticle> queryByPage(Pageable pageable) {
         return adminArticleDao.queryByPage(pageable);
+    }
+
+    @Override
+    public AdminArticle findById(Long id) {
+        Optional<AdminArticle> optionalAdminArticle = adminArticleDao.findById(id);
+        return optionalAdminArticle.orElse(null);
     }
 }

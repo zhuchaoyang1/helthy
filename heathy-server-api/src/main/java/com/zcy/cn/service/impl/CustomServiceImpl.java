@@ -4,6 +4,7 @@ import com.zcy.cn.bean.BodyArgs;
 import com.zcy.cn.bean.Custom;
 import com.zcy.cn.bean.Img;
 import com.zcy.cn.dao.CustomDao;
+import com.zcy.cn.dto.AdminCustomChangeDTO;
 import com.zcy.cn.dto.CustomDTO;
 import com.zcy.cn.enums.BodyEnum;
 import com.zcy.cn.enums.ImgEnum;
@@ -57,7 +58,7 @@ public class CustomServiceImpl implements CustomService {
         }
 
         // 获取小程序无数据显示图片链接
-        Img img = imgService.findByIndexs(ImgEnum.WECHATNODATAIMG.getIndexs());
+        Img img = imgService.findByIndexs(ImgEnum.WECHATNODATAIMG.getIndexs()).get(0);
         mapResult.put("noData", img == null ? "" : img.getLocaltionPath());
         BodyArgs bodyArgs = bodyArgsService.findLastByUId(annotationUser.getUId());
         if (bodyArgs == null) {
@@ -107,5 +108,15 @@ public class CustomServiceImpl implements CustomService {
         // 个人身材
         mapResult.put("bodyTest", bodyEnum.get().getName());
         return mapResult;
+    }
+
+    @Override
+    public List<AdminCustomChangeDTO> adminBmiWeights(Integer bmiFlag) {
+        return customDao.adminBmiWeight(bmiFlag);
+    }
+
+    @Override
+    public void update(Custom custom) {
+        customDao.update(custom.getCWeight(), custom.getSId(), custom.getBmiFlag());
     }
 }

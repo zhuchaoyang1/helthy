@@ -62,7 +62,7 @@ public class ImgServiceImpl implements ImgService {
     }
 
     @Override
-    public Img findByIndexs(Integer indexs) {
+    public List<Img> findByIndexs(Integer indexs) {
         return imgDao.findByIndexs(indexs);
     }
 

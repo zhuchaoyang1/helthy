@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: redis,dao,@profiles.active@,quartz
+    active: redis,dao,@profiles.active@,quartz,config
   devtools:
     restart:
       enabled: true

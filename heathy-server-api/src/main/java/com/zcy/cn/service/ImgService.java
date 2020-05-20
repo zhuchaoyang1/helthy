@@ -14,7 +14,8 @@ public interface ImgService {
 
     Img saveImg(MultipartFile file, HttpSession session, Img img, Boolean isArcticle);
 
-    Img findByIndexs(Integer indexs);
+    List<Img> findByIndexs(Integer indexs);
 
     void delete(List<String> filePaths);
+
 }

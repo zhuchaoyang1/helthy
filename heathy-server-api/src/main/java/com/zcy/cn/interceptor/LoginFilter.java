@@ -81,7 +81,7 @@ public class LoginFilter implements Filter {
                     flag = false;
                 }
             }
-            if(StringUtils.isEmpty(token)) {
+            if (StringUtils.isEmpty(token)) {
                 flag = false;
             }
         }

@@ -5,9 +5,12 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.zcy.cn.annotation.TokenModel;
 import com.zcy.cn.bean.ArticlePing;
 import com.zcy.cn.bean.ResultHttp;
+import com.zcy.cn.dto.PingLunPageDTO;
+import com.zcy.cn.pages.WechatPage;
 import com.zcy.cn.service.ArticlePingService;
 import com.zcy.cn.vo.AnnotationUser;
 import com.zcy.cn.vo.ArticlePingVO;
+import com.zcy.cn.vo.IssueArticleVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,8 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/ping")
@@ -24,6 +26,8 @@ public class ArticlePingController {
 
     @Autowired
     private ArticlePingService articlePingService;
+    @Autowired
+    private WechatPage<ArticlePingVO> wechatPage;
 
     @TokenModel
     @PostMapping("/save")
@@ -37,32 +41,36 @@ public class ArticlePingController {
     /**
      * 此处前端PageInfo.pageNo由后端控制
      *
-     * @param iAId      文章ID
-     * @param pageNo    分页起始页
-     * @param frontSize s上一次查询记录的条数
      * @return
      */
-    @GetMapping("/{iAId}/{pageNo}/{frontSize}")
-    public ResultHttp queryByArticleIdByPage(@PathVariable String iAId, @PathVariable String pageNo, @PathVariable String frontSize) {
-        // TODO 评论问题
-        int start = Integer.parseInt(pageNo);
-        start = start == 0 ? 0 : start - 1;
-        int frontSizeInt = Integer.parseInt(frontSize);
-        Pageable pageable = PageRequest.of(start, 5);
-        List<ArticlePingVO> result = articlePingService.findAllByIAIdOrderByAPIdDesc(Long.valueOf(iAId), pageable);
-        if (result.size() != frontSizeInt) {
-            // 当前页数量有更新
-            return ResultHttp.builder().code(1).result(
-                    JSON.toJSONString(result.subList(0, (result.size() - frontSizeInt) > 0 ? (result.size() - frontSizeInt) : result.size()), SerializerFeature.DisableCircularReferenceDetect)
-            ).build();
-        } else {
-            // 当前页数量没有更新
-            pageable = PageRequest.of(start + 1, 5);
-            result = articlePingService.findAllByIAIdOrderByAPIdDesc(Long.valueOf(iAId), pageable);
-            return ResultHttp.builder().code(1).result(
-                    JSON.toJSONString(result, SerializerFeature.DisableCircularReferenceDetect)
-            ).build();
+    @PostMapping("/query/by")
+    public ResultHttp queryByArticleIdByPage(@RequestBody PingLunPageDTO pingLunPageDTO) {
+        if (pingLunPageDTO == null) {
+            return ResultHttp.builder().code(-1).result("参数不合法").build();
         }
+
+        Map<String, Object> result = new HashMap<>();  // flag 前端PageNo是否需要+1   Data 前端需要concat的数据
+
+
+        Pageable pageable = PageRequest.of(pingLunPageDTO.getPageNo(), 5);
+        List<ArticlePingVO> currData = articlePingService.findAllByIAIdOrderByAPIdDesc(pingLunPageDTO.getIAId(), pageable);
+
+        if (currData.size() < 5) {
+            result.put("flag", false);  // 前端PageNo不要+1
+        } else {
+            result.put("flag", true);   // 当前查询页满了，  前端可以+1 下次从下一页开始查询
+        }
+
+        if (pingLunPageDTO.getFrontSize() == currData.size()) {
+            // 前端当前页满了
+            result.put("data", new ArrayList<>());
+        } else {
+            // 构造当前页的差值
+            Map<String, Object> spitMap = wechatPage.splitPage(pingLunPageDTO.getFrontSize(), currData);
+            result.put("data", spitMap.get("splitList"));
+        }
+
+        return ResultHttp.builder().code(1).result(JSON.toJSONString(result, SerializerFeature.DisableCircularReferenceDetect)).build();
 
     }
 

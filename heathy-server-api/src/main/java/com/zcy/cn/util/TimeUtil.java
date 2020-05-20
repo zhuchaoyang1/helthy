@@ -47,6 +47,23 @@ public class TimeUtil {
     }
 
     /**
+     * 构造上一周的日期
+     *
+     * @return
+     */
+    public static LocalDate[] buildLastWeek() {
+        LocalDate[] lastWeekLocalDates = new LocalDate[7];
+
+        LocalDate localDate = LocalDate.now();
+
+        for (int i = 1; i < 8; i++) {
+            lastWeekLocalDates[i - 1] = localDate.with(TemporalAdjusters.previous(DayOfWeek.SUNDAY)).minusDays(7 - i);
+        }
+
+        return lastWeekLocalDates;
+    }
+
+    /**
      * Build Seven Date
      *
      * @param localDates

@@ -1,5 +1,6 @@
 package com.zcy.cn.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.JOSEException;
@@ -7,18 +8,16 @@ import com.zcy.cn.annotation.TokenModel;
 import com.zcy.cn.bean.Users;
 import com.zcy.cn.dao.UserDao;
 import com.zcy.cn.feign.wechat.server.Auth;
+import com.zcy.cn.refresh.AdminRefresh;
 import com.zcy.cn.service.UserService;
 import com.zcy.cn.util.RedisUtils;
-import com.zcy.cn.vo.AnnotationUser;
 import com.zcy.cn.vo.UsersVO;
 import jwt.GenJWTUTil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,6 +45,19 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private GenJWTUTil genJWTUTil;
+
+    // Admin的配置给出默认配置为了避免因为网络延迟问题导致GitHubConfig获取失败
+//    @Value("${admin.uName:admin}")
+//    private String adminUName;
+//
+//    @Value("${admin.uPwd:zhuchaoyang}")
+//    private String adminUPwd;
+
+    /**
+     * 从Github中获取动态配置
+     */
+    @Autowired
+    private AdminRefresh adminRefresh;
 
     /**
      * 每一次小程序发起的登录都会重新刷新Redis Session_key
@@ -91,6 +103,33 @@ public class UserServiceImpl implements UserService {
     @Override
     public Users findById(Long id) {
         return userDao.findById(id).orElse(new Users());
+    }
+
+    @Override
+    public Map<String, Object> adminLogin(JSONObject jsonObject) {
+        boolean flag = false;
+        Map<String, Object> result = new HashMap<>();
+        if (jsonObject.containsKey("uName") && jsonObject.containsKey("uPwd")) {
+            Object uName = jsonObject.get("uName");
+            Object uPwd = jsonObject.get("uPwd");
+            if (adminRefresh.getUName().equals(String.valueOf(uName)) && adminRefresh.getUPwd().equals(String.valueOf(uPwd))) {
+                flag = true;
+            }
+        }
+
+        if (flag) {
+            Map<String, Object> jwtMap = new HashMap<>();
+            jwtMap.put("symbol", "pc");              // 代表是PC标志
+            jwtMap.put("openId", adminRefresh.getUName());        // 为了和小程序字段统一
+            jwtMap.put("uId", adminRefresh.getUPwd());            // 为了和小程序字段统一
+            try {
+                result.put("jwt", genJWTUTil.creatToken(jwtMap));
+            } catch (JOSEException e) {
+                e.printStackTrace();
+            }
+        }
+        result.put("code", flag);
+        return result;
     }
 
 }

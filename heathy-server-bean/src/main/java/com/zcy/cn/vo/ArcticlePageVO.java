@@ -13,4 +13,8 @@ public class ArcticlePageVO {
 
     private Integer pageNo;
 
+    private Integer pageSize;       // 备用
+
+    private Integer frontSize;
+
 }

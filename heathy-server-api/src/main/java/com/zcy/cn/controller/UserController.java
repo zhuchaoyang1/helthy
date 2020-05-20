@@ -29,12 +29,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Value("${admin.uName:admin}")
-    private String adminUName;
-
-    @Value("${admin.uPwd:zhuchaoyang}")
-    private String adminUPwd;
-
     @ApiOperation(value = "用户登录", notes = "用户登录接口")
     @PostMapping("/login")
     public ResultHttp login(@RequestBody Map<String, String> map) {
@@ -60,14 +54,8 @@ public class UserController {
 
     @PostMapping("/admin/login")
     public ResultHttp adminLogin(@RequestBody JSONObject jsonObject) {
-        boolean flag = false;
-        if (jsonObject.containsKey("uName") && jsonObject.containsKey("uPwd")) {
-            Object uName = jsonObject.get("uName");
-            Object uPwd = jsonObject.get("uPwd");
-            if (adminUName.equals(String.valueOf(uName)) && adminUPwd.equals(String.valueOf(uPwd))) {
-                flag = true;
-            }
-        }
-        return ResultHttp.builder().code(1).result(flag ? "ok" : "error").build();
+        Map<String, Object> result = userService.adminLogin(jsonObject);
+        boolean flag = (boolean) result.get("code");
+        return ResultHttp.builder().code(flag ? 1 : 0).result(result).build();
     }
 }

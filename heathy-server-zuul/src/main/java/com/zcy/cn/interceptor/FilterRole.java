@@ -4,7 +4,9 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
+import com.zcy.cn.service.SendToKafka;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
@@ -27,6 +29,9 @@ import java.util.stream.Collectors;
 @Component
 public class FilterRole extends ZuulFilter {
 
+    @Autowired
+    private SendToKafka sendToKafka;
+
     @Value("#{'${white.list}'.split(',')}")
     private String[] whiteApi;
 
@@ -40,7 +45,6 @@ public class FilterRole extends ZuulFilter {
         // 级别不能太低
         return 4;
     }
-
     /**
      * Ture  执行过滤器
      * False 不执行过滤器
@@ -69,14 +73,14 @@ public class FilterRole extends ZuulFilter {
 
     /**
      * ShoudFilter上的@HystrixCommand注解的优先级比Zuul Filter低
-     * @HistrixCommand上的FallBack不会被执行
+     *
      * @return
+     * @HistrixCommand上的FallBack不会被执行
      */
 //    public boolean histrixCommandCallBack() {
 //        log.error("错误信息");
 //        return true;
 //    }
-
     @Override
     public Object run() throws ZuulException {
         RequestContext context = RequestContext.getCurrentContext();
