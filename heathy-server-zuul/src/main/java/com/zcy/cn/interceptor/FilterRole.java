@@ -1,11 +1,13 @@
 package com.zcy.cn.interceptor;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
+import com.zcy.cn.contanst.Contanst;
 import com.zcy.cn.jwt.ParseJWTUtil;
 import com.zcy.cn.service.SendToKafka;
 import lombok.extern.slf4j.Slf4j;
@@ -109,7 +111,6 @@ public class FilterRole extends ZuulFilter {
 //        }
 //        return null;
 //    }
-
     @Override
     public Object run() throws ZuulException {
 
@@ -148,6 +149,10 @@ public class FilterRole extends ZuulFilter {
                 Object uId = playload.get("uId");
                 request.setAttribute("openId", openId);
                 request.setAttribute("uId", uId);
+
+                // 流量记录Kafka
+                playload.put("RequestURL", request.getRequestURI());
+                sendToKafka.sendToTopic(Contanst._FLOWTOPIC, JSON.toJSONString(playload));
             } else {
                 this.noLogin(context);
             }

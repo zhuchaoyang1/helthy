@@ -14,7 +14,7 @@ spring:
 
 myeureka:
   server:
-    localhost
+    47.101.216.18
   port:
     8761
 
@@ -49,10 +49,10 @@ zuul:
 
 # Ribbon Inside TimeOut
 ribbon:
-  MaxAutoRetries: 1
+  MaxAutoRetries: 0
   MaxAutoRetriesNextServer: 0
-  ReadTimeout: 10000
-  ConnectTimeout: 10000
+  ReadTimeout: 6000
+  ConnectTimeout: 6000
 
 # Zuul Inside Hystrix TimeOut
 hystrix:
@@ -61,7 +61,7 @@ hystrix:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 20000
+            timeoutInMilliseconds: 12000
 
 
 management:
@@ -82,4 +82,4 @@ jwt:
     geiwodiangasfdjsikolkjikolkijswe
 
 white:
-  list: /user/login,/user/no/login,/log/save,/druid/**,/*.ico,/log/by/id/**,/actuator/**,/img/**,/common/file/**,/user/admin/login,/hystrix.stream,/**.png,/**.jpg,/**.gif,/img/**.png,/img/**.jpg,/img/**.gif
+  list: /user/login,/user/reg,/user/no/login,/log/save,/druid/**,/*.ico,/log/by/id/**,/actuator/**,/img/**,/common/file/**,/user/admin/login,/hystrix.stream,/**.png,/**.jpg,/**.gif,/img/**.png,/img/**.jpg,/img/**.gif

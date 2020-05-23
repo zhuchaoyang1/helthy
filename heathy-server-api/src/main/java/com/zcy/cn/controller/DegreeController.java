@@ -59,6 +59,10 @@ public class DegreeController {
             result = degreeService.findCurrentWeek(annotationUser);
         }
 
+        if(result.size() <= 0) {
+            return ResultHttp.builder().code(1).result(null).build();
+        }
+
         LocalDate forms = TimeUtil.dateConvertToLocalDate(result.get(0).getDates());
         // 一周七天的日期
         LocalDate[] currWeekLocalDate = TimeUtil.buildCurrWeekLocalDate(forms);

@@ -3,7 +3,7 @@ server:
 
 myeureka:
   server:
-    localhost
+    47.101.216.18
   port:
     8761
 

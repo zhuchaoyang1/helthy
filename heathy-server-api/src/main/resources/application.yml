@@ -1,16 +1,25 @@
 spring:
   profiles:
-    active: redis,dao,@profiles.active@,quartz,config
+    active: redis,dao,quartz,config
   devtools:
     restart:
       enabled: true
     freemarker:
       cache: false
+  servlet:
+    multipart:
+      enabled: true
+      max-request-size: 100MB
+      max-file-size: 20MB
 
   mail:
     host: smtp.163.com
     username: zhuchaoyang_1@163.com
     password: ZGSEJUUCGYIMJWFJ
+  data:
+    redis:
+      repositories:
+        enabled: false
 
 
 # 加密
@@ -30,11 +39,11 @@ logging:
     com.zcy.cn.feign.wechat.server.Auth: debug
 
 white:
-  list: /user/login,/user/no/login,/log/save,/druid/**,/*.ico,/log/by/id/**,/actuator/**,/img/**,/common/file/**,/user/admin/login,/hystrix.stream
+  list: /user/login,/user/reg,/user/no/login,/log/save,/druid/**,/*.ico,/log/by/id/**,/actuator/**,/img/**,/common/file/**,/user/admin/login,/hystrix.stream
 
-eureka:
-  client:
-    enabled: false
+#eureka:
+#  client:
+#    enabled: false
 
 email:
   # 邮件发送触发器  目前为每隔一个小时进行发送
@@ -43,5 +52,4 @@ email:
     # ERROR级别以上需要发送
     leavel: ERROR
   # TODO 邮件日志简讯链接  回调地址  项目上线需要修改此处
-  server: http://localhost:8080
-
+  server: http://106.14.160.110:8080

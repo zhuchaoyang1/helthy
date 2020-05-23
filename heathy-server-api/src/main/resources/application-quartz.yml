@@ -22,9 +22,9 @@ spring:
             threadsInheritContextClassLoaderOfInitializingThread: true
           dataSource:
             default:
-              URL: jdbc:mysql://localhost:3306/healthy?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2b8
+              URL: jdbc:mysql://47.101.216.18:3306/healthy?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2b8
               user: root
-              password: 123456
+              password: ZCYsxj.111
               driver: com.mysql.jdbc.Driver
               connectionProvider:
                 class: com.zcy.cn.quartz.datapooldruid.DruidConnectionProvider
@@ -32,4 +32,4 @@ spring:
     job-store-type: jdbc
     #初始化表结构
     jdbc:
-      initialize-schema: always
+      initialize-schema: never

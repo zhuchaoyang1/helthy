@@ -4,8 +4,35 @@ management:
       exposure:
         include: ["info","health","hystrix.stream","refresh"]
 
+myeureka:
+  server:
+    47.101.216.18
+  port:
+    8761
+
+eureka:
+  instance:
+    preferIpAddress: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    enabled: true
+    serviceUrl:
+      defaultZone: http://${myeureka.server}:${myeureka.port}/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
+info:
+  app.name: heathy-server-api
+  description: Providing services to wechat
+
+local:
+  upload:
+    img: /src/main/resources/static
+
 # 放在最高级文件中，项目初次启动则会从Github中获取配置
 spring:
+  application:
+    name: api
   cloud:
     config:
       name: heathy-server-api  # 如果不配置name则默认为当前服务API，则Github config：API-xxx
