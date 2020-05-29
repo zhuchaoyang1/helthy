@@ -2,8 +2,8 @@ server:
   port: 1031
 
 spring:
-  profiles:
-    active: kafka  # ´øÉÏKafkaÅäÖÃ
+#  profiles:
+#    active: kafka
   application:
     name: service-zuul
 #  security:

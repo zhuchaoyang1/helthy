@@ -1,5 +1,5 @@
 # 此配置从Github中获取   待Refresh刷新项目配置  则会覆盖下述配置
-admin:
-  config:
+config:
+  admin:
     uName: admin
     uPwd: zhuchaoyang

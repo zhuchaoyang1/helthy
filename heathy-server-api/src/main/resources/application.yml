@@ -32,9 +32,9 @@ logging:
 white:
   list: /user/login,/user/no/login,/log/save,/druid/**,/*.ico,/log/by/id/**,/actuator/**,/img/**,/common/file/**,/user/admin/login,/hystrix.stream
 
-eureka:
-  client:
-    enabled: false
+#eureka:
+#  client:
+#    enabled: false
 
 email:
   # 邮件发送触发器  目前为每隔一个小时进行发送
