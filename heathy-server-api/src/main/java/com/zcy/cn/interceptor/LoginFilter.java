@@ -145,7 +145,7 @@ public class LoginFilter implements Filter {
         }
 
         // 此处只做简单处理  其实Gateway已经将该中情况屏蔽掉
-        if ((!StringUtils.isEmpty(request.getHeader("Token")) || contrastList.size() > 0) || (!StringUtils.isEmpty(token) && flag)) {
+        if ((!StringUtils.isEmpty(request.getHeader("Token")) || contrastList.size() > 0) || (!StringUtils.isEmpty(token) && flag) || request.getMethod().equals("OPTIONS")) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
             response.sendRedirect("/user/no/login");

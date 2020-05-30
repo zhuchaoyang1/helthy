@@ -1,4 +1,4 @@
-#Ö¸¶¨·þÎñµÄ¶Ë¿Ú
+#Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¶Ë¿ï¿½
 server:
   port: 8761
 
@@ -14,7 +14,7 @@ eureka:
     fetchRegistry: false
     serviceUrl:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
-    #1.¿ªÆô×ÔÎÒ±£»¤»úÖÆÔöÇ¿·ÖÇøÈÝ´íÐÔ
-    enable-self-preservation: true
-    #2.×¢²áÖÐÐÄÇåÀí¼ä¸ô
+    #1.ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½ï¿½ï¿½ï¿½Ý´ï¿½ï¿½ï¿½
+    enable-self-preservation: false
+    #2.×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     eviction-interval-timer-in-ms: 60000
