@@ -12,7 +12,6 @@ spring:
     username: zhuchaoyang_1@163.com
     password: ZGSEJUUCGYIMJWFJ
 
-
 # 加密
 jwt:
   secret: geiwodiangasfdjsikolkjikolkijswe
@@ -32,9 +31,9 @@ logging:
 white:
   list: /user/login,/user/no/login,/log/save,/druid/**,/*.ico,/log/by/id/**,/actuator/**,/img/**,/common/file/**,/user/admin/login,/hystrix.stream
 
-#eureka:
-#  client:
-#    enabled: false
+eureka:
+  client:
+    enabled: false
 
 email:
   # 邮件发送触发器  目前为每隔一个小时进行发送
@@ -44,4 +43,3 @@ email:
     leavel: ERROR
   # TODO 邮件日志简讯链接  回调地址  项目上线需要修改此处
   server: http://localhost:8080
-

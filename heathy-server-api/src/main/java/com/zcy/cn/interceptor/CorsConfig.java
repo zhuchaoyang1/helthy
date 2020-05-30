@@ -16,12 +16,14 @@ public class CorsConfig implements Filter {
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, HEAD, PUT");
         response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "access-control-allow-origin, token, content-type, X-Requested-With");
+        response.setHeader("Access-Control-Allow-Headers", "access-control-allow-origin, token, Token, content-type, X-Requested-With");
         chain.doFilter(req, res);
     }
 
-    public void init(FilterConfig filterConfig) {}
+    public void init(FilterConfig filterConfig) {
+    }
 
-    public void destroy() {}
+    public void destroy() {
+    }
 
 }
